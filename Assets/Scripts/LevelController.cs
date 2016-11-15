@@ -15,7 +15,7 @@ public class LevelController : MonoBehaviour {
 
 	//General Vars
 	[SerializeField]
-	private GameObject player, goal, completeText;
+	private GameObject player, goal, completeText, deadText;
 
 	//Fadeout/Fadein Vars
 	[SerializeField]
@@ -28,7 +28,6 @@ public class LevelController : MonoBehaviour {
 	private bool introComplete;
 	[SerializeField]
 	private GameObject WidescreenBottom, WidescreenTop, levelText;
-
 
 	// Use this for initialization
 	void Start () {
@@ -61,20 +60,27 @@ public class LevelController : MonoBehaviour {
 					firstFrameInState = false;
 				}
 
-				if(timer > 3f && !introComplete)
-				{
-					IntroFinish();
-				}
-
 				if (Input.GetAxis("Action") > 0f)
 				{
 					if (!pressed)
 					{
-						currentState = LevelState.Playing;
-						pressed = true;
-						IntroFinish();
-						firstFrameInState = true;
+						if (!introComplete)
+						{
+							StartCoroutine(IntroFinish(3));
+						}
+						else
+						{
+							currentState = LevelState.Playing;
+							player.GetComponent<Rigidbody2D>().gravityScale = 1;
+							firstFrameInState = true;
+						}
 					}
+					pressed = true;
+				}
+
+				if(timer > 3f && !introComplete)
+				{
+					StartCoroutine(IntroFinish(1));
 				}
 				break;
 
@@ -85,6 +91,12 @@ public class LevelController : MonoBehaviour {
 					firstFrameInState = false;
 				}
 
+				if(player.GetComponent<PlayerController>().IsDead())
+				{
+					currentState = LevelState.Death;
+					firstFrameInState = true;
+				}
+
 				if(goal.GetComponent<GoalController>().IsGoalReached())
 				{
 					currentState = LevelState.Complete;
@@ -93,6 +105,21 @@ public class LevelController : MonoBehaviour {
 				break;
 
 			case LevelState.Death:
+				if (firstFrameInState)
+				{
+					Debug.Log("Lost the level");
+					firstFrameInState = false;
+					LeanTween.scale(deadText, new Vector3(1, 1, 1), 0.75f).setEase(LeanTweenType.easeOutBack);
+				}
+
+				if (Input.GetAxis("Action") > 0f)
+				{
+					if (!pressed)
+					{
+						SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+					}
+					pressed = true;
+				}
 				break;
 
 			case LevelState.Complete:
@@ -108,8 +135,8 @@ public class LevelController : MonoBehaviour {
 					if (!pressed)
 					{
 						StartCoroutine(Fadeout());
-						pressed = true;
 					}
+					pressed = true;
 				}
 				break;
 		};
@@ -120,13 +147,17 @@ public class LevelController : MonoBehaviour {
 		}
 	}
 
-	private void IntroFinish()
+	IEnumerator IntroFinish(float timeScale)
 	{
-		LeanTween.moveY(WidescreenTop, WidescreenTop.transform.position.y + WIDESCREEN_HEIGHT, 0.75f).setEase(LeanTweenType.easeOutCubic);
-		LeanTween.moveY(WidescreenBottom, WidescreenBottom.transform.position.y - WIDESCREEN_HEIGHT, 0.75f).setEase(LeanTweenType.easeOutCubic);
-		float textStartPos = levelText.transform.position.x;
-		LeanTween.moveX(levelText, levelText.transform.parent.gameObject.transform.position.x + textStartPos * 2, 0.5f).setEase(LeanTweenType.easeInBack);
 		introComplete = true;
+		while(LeanTween.isTweening(levelText))
+		{
+			yield return null;
+		}
+		LeanTween.moveY(WidescreenTop, WidescreenTop.transform.position.y + WIDESCREEN_HEIGHT, 0.75f * (1/timeScale)).setEase(LeanTweenType.easeOutCubic);
+		LeanTween.moveY(WidescreenBottom, WidescreenBottom.transform.position.y - WIDESCREEN_HEIGHT, 0.75f * (1 / timeScale)).setEase(LeanTweenType.easeOutCubic);
+		float textStartPos = levelText.transform.position.x;
+		LeanTween.moveX(levelText, levelText.transform.parent.gameObject.transform.position.x + textStartPos * 2, 0.5f * (1 / timeScale)).setEase(LeanTweenType.easeInBack);
 	}
 
 	IEnumerator Fadeout ()
@@ -142,6 +173,9 @@ public class LevelController : MonoBehaviour {
 			yield return null;
 		}
 
-		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+		int index = SceneManager.GetActiveScene().buildIndex + 1;
+		if (index >= SceneManager.sceneCountInBuildSettings)
+			index = SceneManager.sceneCountInBuildSettings - 1;
+		SceneManager.LoadScene(index);
 	}
 }

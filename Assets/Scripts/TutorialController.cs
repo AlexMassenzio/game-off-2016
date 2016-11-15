@@ -12,6 +12,8 @@ public class TutorialController : MonoBehaviour {
 	private bool pressed;
 
 	//Update Vars
+	[SerializeField]
+	private GameObject player;
 	private bool escapable = true;
 
 	//Fadeout Vars
@@ -55,6 +57,7 @@ public class TutorialController : MonoBehaviour {
 				{
 					if (!pressed)
 					{
+						player.GetComponent<Rigidbody2D>().gravityScale = 1;
 						currentState++;
 						timer = 0f;
 						pressed = true;
@@ -90,10 +93,16 @@ public class TutorialController : MonoBehaviour {
 			case TutorialState.Unstuck:
 				if (timer > 1.5f && timer < 4f)
 				{
-					tutText.text = "You have completed the tutorial! Press Esc";
+					tutText.text = "You have completed the tutorial! Press space";
 					Camera.main.GetComponent<CameraFollow>().SetFocus(tutText.transform);
 				}
-				break;
+
+				if (Input.GetAxis("Action") > 0f && timer > 1.5f && escapable)
+				{
+					escapable = false;
+					StartCoroutine(Fadeout());
+				}
+					break;
 		};
 
 		if (Input.GetAxis("Action") == 0f)

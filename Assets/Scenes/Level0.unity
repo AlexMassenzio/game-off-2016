@@ -618,6 +618,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0fc48128f5976d49a0e5a35fdb58319, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 23810688}
   tutText: {fileID: 1488990794}
   whiteout: {fileID: 846732449}
 --- !u!4 &1996115964
