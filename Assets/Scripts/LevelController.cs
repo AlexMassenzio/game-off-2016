@@ -11,6 +11,7 @@ public class LevelController : MonoBehaviour {
 	private GameObject previewTrans;
 	private bool firstFrameInState;
 	private bool pressed;
+	private float timer;
 
 	//General Vars
 	[SerializeField]
@@ -22,8 +23,11 @@ public class LevelController : MonoBehaviour {
 	private const float FADE_TIME_SCALE = 0.5f;
 
 	//Intro Vars
+	private const float WIDESCREEN_HEIGHT = 83f;
+	private float textStartPos;
+	private bool introComplete;
 	[SerializeField]
-	private GameObject WidescreenBottom, WidescreenTop;
+	private GameObject WidescreenBottom, WidescreenTop, levelText;
 
 
 	// Use this for initialization
@@ -32,21 +36,34 @@ public class LevelController : MonoBehaviour {
 		previewTrans = new GameObject();
 		firstFrameInState = true;
 		pressed = false;
+		timer = 0;
+		introComplete = false;
+		textStartPos = levelText.transform.position.x;
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
+		timer += Time.deltaTime;
 
 		switch (currentState) {
 			case LevelState.Preview:
 				if (firstFrameInState)
 				{
+					timer = 0;
+
 					previewTrans.transform.position = (Vector2)((goal.transform.position - player.transform.position) * 0.5f + player.transform.position);
 					Camera.main.GetComponent<CameraFollow> ().SetFocus (previewTrans.transform);
-					LeanTween.moveY(WidescreenTop, 227.5f, 0.75f).setEase(LeanTweenType.easeOutCubic).delay = 2.5f;
-					LeanTween.moveY(WidescreenBottom, -227.5f, 0.75f).setEase(LeanTweenType.easeOutCubic).delay = 2.5f;
+					LeanTween.moveY(WidescreenTop, WidescreenTop.transform.position.y - WIDESCREEN_HEIGHT, 0.75f).setEase(LeanTweenType.easeOutCubic).delay = 0.5f;
+					LeanTween.moveY(WidescreenBottom, WidescreenBottom.transform.position.y + WIDESCREEN_HEIGHT, 0.75f).setEase(LeanTweenType.easeOutCubic).delay = 0.5f;
+					LeanTween.moveX(levelText, levelText.transform.parent.gameObject.transform.position.x, 0.5f).setEase(LeanTweenType.easeOutBack).delay = 1f;
+
 					firstFrameInState = false;
+				}
+
+				if(timer > 3f && !introComplete)
+				{
+					IntroFinish();
 				}
 
 				if (Input.GetAxis("Action") > 0f)
@@ -55,6 +72,7 @@ public class LevelController : MonoBehaviour {
 					{
 						currentState = LevelState.Playing;
 						pressed = true;
+						IntroFinish();
 						firstFrameInState = true;
 					}
 				}
@@ -100,6 +118,15 @@ public class LevelController : MonoBehaviour {
 		{
 			pressed = false;
 		}
+	}
+
+	private void IntroFinish()
+	{
+		LeanTween.moveY(WidescreenTop, WidescreenTop.transform.position.y + WIDESCREEN_HEIGHT, 0.75f).setEase(LeanTweenType.easeOutCubic);
+		LeanTween.moveY(WidescreenBottom, WidescreenBottom.transform.position.y - WIDESCREEN_HEIGHT, 0.75f).setEase(LeanTweenType.easeOutCubic);
+		float textStartPos = levelText.transform.position.x;
+		LeanTween.moveX(levelText, levelText.transform.parent.gameObject.transform.position.x + textStartPos * 2, 0.5f).setEase(LeanTweenType.easeInBack);
+		introComplete = true;
 	}
 
 	IEnumerator Fadeout ()
