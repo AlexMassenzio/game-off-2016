@@ -38,6 +38,8 @@ public class LevelController : MonoBehaviour {
 		timer = 0;
 		introComplete = false;
 		textStartPos = levelText.transform.position.x;
+		levelText.GetComponent<Text>().text = "Level " + (SceneManager.GetActiveScene().buildIndex);
+		Debug.Log(levelText.GetComponent<Text>().text);
 	}
 	
 	// Update is called once per frame

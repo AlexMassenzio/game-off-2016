@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour
 	private bool pressed;
 	private bool dead;
 
+	[SerializeField]
+	private AudioClip stick, unstick;
+
 	// Use this for initialization
 	void Start()
 	{
@@ -27,6 +30,8 @@ public class PlayerController : MonoBehaviour
 			if (!pressed && transform.parent != null)
 			{
 				Debug.Log("Releasing");
+				GetComponent<AudioSource>().clip = unstick;
+				GetComponent<AudioSource>().Play();
 				Vector2 detachedVelocity = ((Vector2)transform.position - lastPosition) * (1 / Time.fixedDeltaTime);
 				transform.parent = null;
 				rbody.isKinematic = false;
@@ -66,5 +71,7 @@ public class PlayerController : MonoBehaviour
 		rbody.isKinematic = true;
 		transform.parent = o.gameObject.transform;
 		Camera.main.GetComponent<CameraFollow>().SetFocus(o.transform);
+		GetComponent<AudioSource>().clip = stick;
+		GetComponent<AudioSource>().Play();
 	}
 }
