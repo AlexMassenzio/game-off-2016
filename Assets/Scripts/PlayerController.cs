@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,6 +10,18 @@ public class PlayerController : MonoBehaviour
 
 	private bool pressed;
 	private bool dead;
+
+		private KeyCode[] numKeys = {
+		 KeyCode.Alpha1,
+		 KeyCode.Alpha2,
+		 KeyCode.Alpha3,
+		 KeyCode.Alpha4,
+		 KeyCode.Alpha5,
+		 KeyCode.Alpha6,
+		 KeyCode.Alpha7,
+		 KeyCode.Alpha8,
+		 KeyCode.Alpha9,
+	 };
 
 	[SerializeField]
 	private AudioClip stick, unstick;
@@ -22,6 +35,29 @@ public class PlayerController : MonoBehaviour
 		pressed = false;
 	}
 
+	void Update()
+	{
+		for (int i = 0; i < numKeys.Length; i++)
+		{
+			if (Input.GetKeyDown(numKeys[i]))
+			{
+				int numberPressed = i + 1;
+				SceneManager.LoadScene(numberPressed);
+			}
+		}
+
+		if (Input.GetKeyDown(KeyCode.RightArrow))
+		{
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+		}
+
+		if (Input.GetKeyDown(KeyCode.LeftArrow))
+		{
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+		}
+
+	}
+
 	void FixedUpdate()
 	{
 
@@ -30,13 +66,13 @@ public class PlayerController : MonoBehaviour
 			if (!pressed && transform.parent != null)
 			{
 				Debug.Log("Releasing");
-				GetComponent<AudioSource>().clip = unstick;
-				GetComponent<AudioSource>().Play();
 				Vector2 detachedVelocity = ((Vector2)transform.position - lastPosition) * (1 / Time.fixedDeltaTime);
 				transform.parent = null;
 				rbody.isKinematic = false;
 				rbody.velocity = detachedVelocity;
 				Camera.main.GetComponent<CameraFollow>().SetFocus(transform);
+				GetComponent<AudioSource>().clip = unstick;
+				GetComponent<AudioSource>().Play();
 			}
 			pressed = true;
 		}

@@ -54,7 +54,10 @@ public class LevelController : MonoBehaviour {
 					timer = 0;
 
 					previewTrans.transform.position = (Vector2)((goal.transform.position - player.transform.position) * 0.5f + player.transform.position);
+
 					Camera.main.GetComponent<CameraFollow> ().SetFocus (previewTrans.transform);
+					Camera.main.GetComponent<CameraFollow>().ZoomToWidth(Vector2.Distance(player.transform.position, goal.transform.position));
+
 					LeanTween.moveY(WidescreenTop, WidescreenTop.transform.position.y - WIDESCREEN_HEIGHT, 0.75f).setEase(LeanTweenType.easeOutCubic).delay = 0.5f;
 					LeanTween.moveY(WidescreenBottom, WidescreenBottom.transform.position.y + WIDESCREEN_HEIGHT, 0.75f).setEase(LeanTweenType.easeOutCubic).delay = 0.5f;
 					LeanTween.moveX(levelText, levelText.transform.parent.gameObject.transform.position.x, 0.5f).setEase(LeanTweenType.easeOutBack).delay = 1f;
@@ -90,6 +93,7 @@ public class LevelController : MonoBehaviour {
 				if(firstFrameInState)
 				{
 					Camera.main.GetComponent<CameraFollow>().SetFocus(player.transform);
+					Camera.main.GetComponent<CameraFollow>().ResetZoom();
 					firstFrameInState = false;
 				}
 
