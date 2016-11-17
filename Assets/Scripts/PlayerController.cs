@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
 	private bool pressed;
 	private bool dead;
 
-		private KeyCode[] numKeys = {
+	private KeyCode[] numKeys = {
 		 KeyCode.Alpha1,
 		 KeyCode.Alpha2,
 		 KeyCode.Alpha3,
@@ -56,6 +56,10 @@ public class PlayerController : MonoBehaviour
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
 		}
 
+		if(Input.GetKeyDown(KeyCode.Escape))
+		{
+			Application.Quit();
+		}
 	}
 
 	void FixedUpdate()
@@ -86,11 +90,11 @@ public class PlayerController : MonoBehaviour
 
 	public void OnTriggerEnter2D(Collider2D collision)
 	{
-		if(collision.gameObject.tag == "Node")
+		if (collision.gameObject.tag == "Node")
 		{
 			StickToObject(collision.gameObject);
 		}
-		if(collision.gameObject.tag == "Kill")
+		if (collision.gameObject.tag == "Kill")
 		{
 			dead = true;
 		}
@@ -109,5 +113,25 @@ public class PlayerController : MonoBehaviour
 		Camera.main.GetComponent<CameraFollow>().SetFocus(o.transform);
 		GetComponent<AudioSource>().clip = stick;
 		GetComponent<AudioSource>().Play();
+	}
+
+	public void WinningLights()
+	{
+		StartCoroutine(LightsOn());
+	}
+
+	IEnumerator LightsOn()
+	{
+		SpriteRenderer spR = GetComponent<SpriteRenderer>();
+		float progress = 0;
+		Color tempColor;
+		while (progress < 0.99)
+		{
+			tempColor = spR.color;
+			tempColor.r = LeanTween.linear(1f, 0f, progress);
+			spR.color = tempColor;
+			progress += Time.deltaTime;
+			yield return null;
+		}
 	}
 }

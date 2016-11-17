@@ -16,6 +16,7 @@ public class GoalController : MonoBehaviour {
 		if(collision.gameObject.tag == "Player")
 		{
 			goalReached = true;
+			collision.gameObject.GetComponent<PlayerController>().WinningLights();
 		}
 	}
 

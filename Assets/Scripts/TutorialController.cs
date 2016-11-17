@@ -46,7 +46,7 @@ public class TutorialController : MonoBehaviour {
 			case TutorialState.Intro:
 				if (timer > 1f && timer < 3f)
 				{
-					tutText.text = "Welcome to my game jame submission!";
+					tutText.text = "Welcome to Tangent!";
 				}
 				else if(timer >= 3f && timer < 6f)
 				{

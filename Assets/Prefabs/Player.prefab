@@ -38,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1758069822292478}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.43, y: 11.43, z: 0}
+  m_LocalPosition: {x: -26.9, y: 13, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -171,6 +171,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stick: {fileID: 8300000, guid: c77d529daca484746a0c2f788ebbacef, type: 3}
   unstick: {fileID: 8300000, guid: ca28d1ec3a2e35743a73a52bedd0c0db, type: 3}
+  rollingSound: {fileID: 0}
 --- !u!212 &212434044489720836
 SpriteRenderer:
   m_ObjectHideFlags: 1
