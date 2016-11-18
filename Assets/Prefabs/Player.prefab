@@ -59,7 +59,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 9cc74b71e23303642bd2ad4fb6ba1f37, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -171,7 +171,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stick: {fileID: 8300000, guid: c77d529daca484746a0c2f788ebbacef, type: 3}
   unstick: {fileID: 8300000, guid: ca28d1ec3a2e35743a73a52bedd0c0db, type: 3}
-  rollingSound: {fileID: 0}
 --- !u!212 &212434044489720836
 SpriteRenderer:
   m_ObjectHideFlags: 1
