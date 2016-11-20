@@ -476,12 +476,11 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Hello closing ceremony peeps! I''m sorry that I couldn''t show up today!
-    If you want to play this on your laptop, go to alexmassenzio.github.io and the
-    link should be in the projects tab.
+  m_Text: 'Thank you for viewing my game! Just want to give a quick shoutout to my
+    fellow members of SGDC for being incredibly supportive of this project!
 
 
-    I hope you all enjoy Tangent!
+    I hope you enjoy Tangent!
 
     <3'
 --- !u!222 &1176605729

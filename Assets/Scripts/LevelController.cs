@@ -10,7 +10,6 @@ public class LevelController : MonoBehaviour {
 	private LevelState currentState;
 	private GameObject previewTrans;
 	private bool firstFrameInState;
-	private bool pressed;
 	private float timer;
 
 	//General Vars
@@ -34,7 +33,6 @@ public class LevelController : MonoBehaviour {
 		currentState = LevelState.Preview;
 		previewTrans = new GameObject();
 		firstFrameInState = true;
-		pressed = false;
 		timer = 0;
 		introComplete = false;
 		textStartPos = levelText.transform.position.x;
@@ -46,6 +44,9 @@ public class LevelController : MonoBehaviour {
 	void Update ()
 	{
 		timer += Time.deltaTime;
+
+		//Debug
+		Debug.Log(player.GetComponent<Rigidbody2D>().angularVelocity.ToString());
 
 		switch (currentState) {
 			case LevelState.Preview:
@@ -65,10 +66,8 @@ public class LevelController : MonoBehaviour {
 					firstFrameInState = false;
 				}
 
-				if (Input.GetAxis("Action") > 0f)
+				if (Input.GetButtonDown("Action"))
 				{
-					if (!pressed)
-					{
 						if (!introComplete)
 						{
 							StartCoroutine(IntroFinish(3));
@@ -79,8 +78,6 @@ public class LevelController : MonoBehaviour {
 							player.GetComponent<Rigidbody2D>().gravityScale = 1;
 							firstFrameInState = true;
 						}
-					}
-					pressed = true;
 				}
 
 				if(timer > 3f && !introComplete)
@@ -118,13 +115,9 @@ public class LevelController : MonoBehaviour {
 					LeanTween.scale(deadText, new Vector3(1, 1, 1), 0.75f).setEase(LeanTweenType.easeOutBack);
 				}
 
-				if (Input.GetAxis("Action") > 0f)
+				if (Input.GetButtonDown("Action"))
 				{
-					if (!pressed)
-					{
-						SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-					}
-					pressed = true;
+					SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 				}
 				break;
 
@@ -136,21 +129,12 @@ public class LevelController : MonoBehaviour {
 					LeanTween.scale(completeText, new Vector3(1,1,1), 0.75f).setEase(LeanTweenType.easeOutBack);
 				}
 
-				if (Input.GetAxis("Action") > 0f)
+				if (Input.GetButtonDown("Action"))
 				{
-					if (!pressed)
-					{
-						StartCoroutine(Fadeout());
-					}
-					pressed = true;
+					StartCoroutine(Fadeout());
 				}
 				break;
 		};
-
-		if (Input.GetAxis("Action") == 0f)
-		{
-			pressed = false;
-		}
 	}
 
 	IEnumerator IntroFinish(float timeScale)

@@ -9,7 +9,6 @@ public class TutorialController : MonoBehaviour {
 	private enum TutorialState {Intro, Stuck, Unstuck};
 	private TutorialState currentState;
 	private float timer;
-	private bool pressed;
 
 	//Update Vars
 	[SerializeField]
@@ -28,7 +27,6 @@ public class TutorialController : MonoBehaviour {
 	void Start () {
 		currentState = TutorialState.Intro;
 		timer = 0f;
-		pressed = false;
 	}
 	
 	// Update is called once per frame
@@ -53,15 +51,11 @@ public class TutorialController : MonoBehaviour {
 					tutText.text = "Press space to release your ball.";
 				}
 
-				if (Input.GetAxis("Action") > 0f)
+				if (Input.GetButtonDown("Action"))
 				{
-					if (!pressed)
-					{
-						player.GetComponent<Rigidbody2D>().gravityScale = 1;
-						currentState++;
-						timer = 0f;
-						pressed = true;
-					}
+					player.GetComponent<Rigidbody2D>().gravityScale = 1;
+					currentState++;
+					timer = 0f;
 				}
 				break;
 
@@ -79,14 +73,10 @@ public class TutorialController : MonoBehaviour {
 					tutText.text = "Press space to un-stick yourself.";
 				}
 
-				if (Input.GetAxis("Action") > 0f && timer > 1.5f)
+				if (Input.GetButtonDown("action"))
 				{
-					if (!pressed)
-					{
 						currentState++;
 						timer = 0f;
-						pressed = true;
-					}
 				}
 				break;
 
@@ -104,11 +94,6 @@ public class TutorialController : MonoBehaviour {
 				}
 					break;
 		};
-
-		if (Input.GetAxis("Action") == 0f)
-		{
-			pressed = false;
-		}
 	}
 
 	IEnumerator Fadeout ()
