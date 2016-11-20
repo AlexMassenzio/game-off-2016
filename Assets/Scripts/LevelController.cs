@@ -24,6 +24,7 @@ public class LevelController : MonoBehaviour {
 	//Intro Vars
 	private const float WIDESCREEN_HEIGHT = 83f;
 	private float textStartPos;
+	private float textEndPos;
 	private bool introComplete;
 	[SerializeField]
 	private GameObject WidescreenBottom, WidescreenTop, levelText;
@@ -36,6 +37,7 @@ public class LevelController : MonoBehaviour {
 		timer = 0;
 		introComplete = false;
 		textStartPos = levelText.transform.position.x;
+		textEndPos = levelText.gameObject.GetComponentInParent<Transform>().localPosition.x + textStartPos * -4;
 		levelText.GetComponent<Text>().text = "Level " + (SceneManager.GetActiveScene().buildIndex);
 		Debug.Log(levelText.GetComponent<Text>().text);
 	}
@@ -46,7 +48,7 @@ public class LevelController : MonoBehaviour {
 		timer += Time.deltaTime;
 
 		//Debug
-		Debug.Log(player.GetComponent<Rigidbody2D>().angularVelocity.ToString());
+		//Debug.Log(player.GetComponent<Rigidbody2D>().angularVelocity.ToString());
 
 		switch (currentState) {
 			case LevelState.Preview:
@@ -68,21 +70,21 @@ public class LevelController : MonoBehaviour {
 
 				if (Input.GetButtonDown("Action"))
 				{
-						if (!introComplete)
-						{
-							StartCoroutine(IntroFinish(3));
-						}
-						else
+						if(introComplete || levelText.transform.position.x == textStartPos)
 						{
 							currentState = LevelState.Playing;
 							player.GetComponent<Rigidbody2D>().gravityScale = 1;
 							firstFrameInState = true;
 						}
+						if (!introComplete)
+						{
+							IntroFinish(3, true);
+						}
 				}
 
 				if(timer > 3f && !introComplete)
 				{
-					StartCoroutine(IntroFinish(1));
+					IntroFinish(1, false);
 				}
 				break;
 
@@ -137,17 +139,23 @@ public class LevelController : MonoBehaviour {
 		};
 	}
 
-	IEnumerator IntroFinish(float timeScale)
+	private void IntroFinish (float timeScale, bool cancelEarly)
 	{
 		introComplete = true;
-		while(LeanTween.isTweening(levelText))
+		if(LeanTween.isTweening(levelText))
+		LeanTween.cancelAll ();
+		LeanTween.moveY (WidescreenTop, WidescreenTop.transform.position.y + WIDESCREEN_HEIGHT, 0.75f * (1 / timeScale)).setEase (LeanTweenType.easeOutCubic);
+		LeanTween.moveY (WidescreenBottom, WidescreenBottom.transform.position.y - WIDESCREEN_HEIGHT, 0.75f * (1 / timeScale)).setEase (LeanTweenType.easeOutCubic);
+		if (cancelEarly)
 		{
-			yield return null;
+			Debug.Log("Ended Early!");
+			LeanTween.moveX (levelText, textStartPos, 0.5f * (1 / timeScale)).setEase (LeanTweenType.easeInBack);
 		}
-		LeanTween.moveY(WidescreenTop, WidescreenTop.transform.position.y + WIDESCREEN_HEIGHT, 0.75f * (1/timeScale)).setEase(LeanTweenType.easeOutCubic);
-		LeanTween.moveY(WidescreenBottom, WidescreenBottom.transform.position.y - WIDESCREEN_HEIGHT, 0.75f * (1 / timeScale)).setEase(LeanTweenType.easeOutCubic);
-		float textStartPos = levelText.transform.position.x;
-		LeanTween.moveX(levelText, levelText.transform.parent.gameObject.transform.position.x + textStartPos * 2, 0.5f * (1 / timeScale)).setEase(LeanTweenType.easeInBack);
+		else
+		{
+			Debug.Log("Ended On Time!");
+			LeanTween.moveX (levelText, textEndPos, 0.5f * (1 / timeScale)).setEase (LeanTweenType.easeInBack);
+		}
 	}
 
 	IEnumerator Fadeout ()

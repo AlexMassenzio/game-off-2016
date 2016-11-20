@@ -1603,7 +1603,7 @@ Prefab:
     - target: {fileID: 114315025474372894, guid: 85814d51018adb245a5511d61967b8c4,
         type: 2}
       propertyPath: m_Text
-      value: Press Space To Got To Beginning
+      value: Press Space to Reset
       objectReference: {fileID: 0}
     - target: {fileID: 224362743424930742, guid: 85814d51018adb245a5511d61967b8c4,
         type: 2}

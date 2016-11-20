@@ -16,7 +16,6 @@ public class SpeedBoard : MonoBehaviour
 		timer += Time.deltaTime;
 		if (collision.gameObject.tag == "Player" && timer > 0.1f)
 		{
-			Debug.Log("Got it");
 			collision.gameObject.GetComponent<Rigidbody2D>().AddForce(collision.gameObject.GetComponent<Rigidbody2D>().velocity.normalized * 250f);
 			timer -= 0.1f;
 		}

@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
 
 	private bool pressed;
 	private bool dead;
+	private int frameSinceLastCollision;
 
 	private KeyCode[] numKeys = {
 		 KeyCode.Alpha1,
@@ -33,10 +34,16 @@ public class PlayerController : MonoBehaviour
 		rbody.gravityScale = 0f;
 		dead = false;
 		pressed = false;
+		rbody.angularDrag = 0;
+		frameSinceLastCollision = -1;
 	}
 
 	void Update()
 	{
+		if(frameSinceLastCollision > -1)
+		{
+			frameSinceLastCollision++;
+		}
 		for (int i = 0; i < numKeys.Length; i++)
 		{
 			if (Input.GetKeyDown(numKeys[i]))
@@ -72,7 +79,7 @@ public class PlayerController : MonoBehaviour
 
 		if (Input.GetAxis("Action") > 0f)
 		{
-			if (!pressed && transform.parent != null)
+			if (!pressed && transform.parent != null && frameSinceLastCollision > 2)
 			{
 				Debug.Log("Releasing");
 				Vector2 detachedVelocity = ((Vector2)transform.position - lastPosition) * (1 / Time.fixedDeltaTime);
@@ -82,6 +89,7 @@ public class PlayerController : MonoBehaviour
 				Camera.main.GetComponent<CameraFollow>().SetFocus(transform);
 				GetComponent<AudioSource>().clip = unstick;
 				GetComponent<AudioSource>().Play();
+				frameSinceLastCollision = -1;
 			}
 			pressed = true;
 		}
@@ -118,6 +126,7 @@ public class PlayerController : MonoBehaviour
 		Camera.main.GetComponent<CameraFollow>().SetFocus(o.transform);
 		GetComponent<AudioSource>().clip = stick;
 		GetComponent<AudioSource>().Play();
+		frameSinceLastCollision = 0;
 	}
 
 	public void WinningLights()
