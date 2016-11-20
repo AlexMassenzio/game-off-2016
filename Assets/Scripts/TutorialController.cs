@@ -73,7 +73,7 @@ public class TutorialController : MonoBehaviour {
 					tutText.text = "Press space to un-stick yourself.";
 				}
 
-				if (Input.GetButtonDown("action"))
+				if (Input.GetButtonDown("Action"))
 				{
 						currentState++;
 						timer = 0f;
