@@ -9,10 +9,15 @@ public class NodeController : MonoBehaviour
 	private float rotationSpeed;
 
 	private SpriteRenderer spRend;
+	private Color originalColor;
+
+	private Coroutine currentBlink;
 
 	void Start()
 	{
 		spRend = GetComponent<SpriteRenderer>();
+		originalColor = spRend.color;
+		currentBlink = null;
 	}
 
 	// Update is called once per frame
@@ -23,16 +28,20 @@ public class NodeController : MonoBehaviour
 
 	public void OnTriggerEnter2D(Collider2D collision)
 	{
-		StartCoroutine(Blink());
+		if (currentBlink != null)
+		{
+			StopCoroutine(currentBlink);
+		}
+		currentBlink = StartCoroutine(Blink());
 	}
 
 	IEnumerator Blink()
 	{
 		float dampingColor = 0.8f;
 		float progress = 0;
-		float r = spRend.color.r;
-		float g = spRend.color.g;
-		float b = spRend.color.b;
+		float r = originalColor.r;
+		float g = originalColor.g;
+		float b = originalColor.b;
 		while (progress < 1)
 		{
 			spRend.color = new Color(LeanTween.linear(dampingColor - r + r, r, progress), LeanTween.linear(dampingColor - r + g, g, progress), LeanTween.linear(dampingColor - r + b, b, progress));

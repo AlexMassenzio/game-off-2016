@@ -37,7 +37,7 @@ public class LevelController : MonoBehaviour {
 		timer = 0;
 		introComplete = false;
 		textStartPos = levelText.transform.position.x;
-		textEndPos = levelText.gameObject.GetComponentInParent<Transform>().localPosition.x + textStartPos * -4;
+		textEndPos = levelText.transform.localPosition.x * -1 + levelText.transform.parent.transform.position.x;
 		levelText.GetComponent<Text>().text = "Level " + (SceneManager.GetActiveScene().buildIndex);
 		Debug.Log(levelText.GetComponent<Text>().text);
 	}
@@ -143,7 +143,7 @@ public class LevelController : MonoBehaviour {
 	{
 		introComplete = true;
 		if(LeanTween.isTweening(levelText))
-		LeanTween.cancelAll ();
+			LeanTween.cancelAll ();
 		LeanTween.moveY (WidescreenTop, WidescreenTop.transform.position.y + WIDESCREEN_HEIGHT, 0.75f * (1 / timeScale)).setEase (LeanTweenType.easeOutCubic);
 		LeanTween.moveY (WidescreenBottom, WidescreenBottom.transform.position.y - WIDESCREEN_HEIGHT, 0.75f * (1 / timeScale)).setEase (LeanTweenType.easeOutCubic);
 		if (cancelEarly)
