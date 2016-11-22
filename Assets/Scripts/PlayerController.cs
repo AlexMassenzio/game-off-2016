@@ -105,6 +105,7 @@ public class PlayerController : MonoBehaviour
 	{
 		if (collision.gameObject.tag == "Node")
 		{
+			Debug.Log("Sticking");
 			StickToObject(collision.gameObject);
 		}
 		if (collision.gameObject.tag == "Kill")

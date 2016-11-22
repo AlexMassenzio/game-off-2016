@@ -51,7 +51,7 @@ public class TutorialController : MonoBehaviour {
 					tutText.text = "Press space to release your ball.";
 				}
 
-				if (Input.GetButtonDown("Action"))
+				if (Input.GetButtonDown("Action") || Input.touches[0].phase == TouchPhase.Began)
 				{
 					player.GetComponent<Rigidbody2D>().gravityScale = 1;
 					currentState++;
