@@ -27,6 +27,7 @@ public class TutorialController : MonoBehaviour {
 	void Start () {
 		currentState = TutorialState.Intro;
 		timer = 0f;
+		Input.simulateMouseWithTouches = true;
 	}
 	
 	// Update is called once per frame
@@ -51,7 +52,7 @@ public class TutorialController : MonoBehaviour {
 					tutText.text = "Press space to release your ball.";
 				}
 
-				if (Input.GetButtonDown("Action") || Input.touches[0].phase == TouchPhase.Began)
+				if (Input.GetButtonDown("Action") || Input.GetMouseButtonDown(0))
 				{
 					player.GetComponent<Rigidbody2D>().gravityScale = 1;
 					currentState++;
