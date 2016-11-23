@@ -35,10 +35,13 @@ public class LevelController : MonoBehaviour {
 		previewTrans = new GameObject();
 		firstFrameInState = true;
 		timer = 0;
+
 		introComplete = false;
-		textStartPos = levelText.transform.position.x;
-		textEndPos = levelText.transform.localPosition.x * -1 + levelText.transform.parent.transform.position.x;
+		textStartPos = (Screen.width + levelText.transform.parent.transform.position.x) * -1;
+		textEndPos = (Screen.width + levelText.transform.parent.transform.position.x);
+		levelText.transform.position = new Vector2(textStartPos, levelText.transform.position.y);
 		levelText.GetComponent<Text>().text = "Level " + (SceneManager.GetActiveScene().buildIndex);
+
 		Debug.Log(levelText.GetComponent<Text>().text);
 	}
 	
