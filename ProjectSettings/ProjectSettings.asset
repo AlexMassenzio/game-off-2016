@@ -121,7 +121,7 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleIdentifier: com.alexmassenzio.tangent
-  bundleVersion: 0.1.2
+  bundleVersion: 0.1.3
   preloadedAssets: []
   metroInputSource: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -468,8 +468,9 @@ PlayerSettings:
   XboxOneAllowedProductIds: []
   XboxOnePersistentLocalStorageSize: 0
   vrEditorSettings: {}
-  cloudServicesEnabled: {}
-  cloudProjectId: 
-  projectName: 
-  organizationId: 
+  cloudServicesEnabled:
+    UNet: 1
+  cloudProjectId: ad7fa666-6084-495e-be96-b7704ae8ad10
+  projectName: Tangent
+  organizationId: alex-4174640
   cloudEnabled: 0

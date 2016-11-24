@@ -244,7 +244,7 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 826c6ae75667a440f8d925b3ff94a03f, type: 3}
     m_FontSize: 74
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 10
     m_MaxSize: 74
     m_Alignment: 4
@@ -538,10 +538,10 @@ RectTransform:
   m_Father: {fileID: 224509882648123436}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.8488989}
+  m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.5, y: 92.65698}
-  m_SizeDelta: {x: 2, y: -18}
+  m_AnchoredPosition: {x: 0, y: 1264}
+  m_SizeDelta: {x: 2, y: 2527}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224274602335513724
 RectTransform:
@@ -557,10 +557,10 @@ RectTransform:
   m_Father: {fileID: 224509882648123436}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0.37660268}
+  m_AnchorMax: {x: 1, y: 0.61886764}
+  m_AnchoredPosition: {x: 0, y: 0.5}
+  m_SizeDelta: {x: -95.29999, y: -2.5999985}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224362743424930742
 RectTransform:
@@ -619,10 +619,10 @@ RectTransform:
   m_Father: {fileID: 224274602335513724}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 714, y: 242}
+  m_SizeDelta: {x: 0, y: -3.9999924}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224579748138250338
 RectTransform:
@@ -656,9 +656,9 @@ RectTransform:
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0.11952134}
-  m_AnchoredPosition: {x: 0.75, y: -82.65701}
-  m_SizeDelta: {x: 1.5, y: 2}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 0.75, y: -1252}
+  m_SizeDelta: {x: 2, y: 2504}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224998475838622638
 RectTransform:
