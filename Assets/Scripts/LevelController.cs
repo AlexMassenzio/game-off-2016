@@ -6,10 +6,21 @@ using UnityEngine.UI;
 
 public class LevelController : MonoBehaviour {
 
-	private enum LevelState {Preview, Playing, Death, Complete};
+	public enum LevelState {Preview, Playing, Death, Complete};
 	private LevelState currentState;
-	private GameObject previewTrans;
 	private bool firstFrameInState;
+
+	public LevelState CurrentState
+	{
+		get { return currentState; }
+		set
+		{
+			currentState = value;
+			firstFrameInState = true;
+		}
+	}
+
+	private GameObject previewTrans;
 	private float timer;
 
 	//General Vars
@@ -31,9 +42,8 @@ public class LevelController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		currentState = LevelState.Preview;
+		CurrentState = LevelState.Preview;
 		previewTrans = new GameObject();
-		firstFrameInState = true;
 		timer = 0;
 
 		introComplete = false;
@@ -53,7 +63,7 @@ public class LevelController : MonoBehaviour {
 		//Debug
 		//Debug.Log(player.GetComponent<Rigidbody2D>().angularVelocity.ToString());
 
-		switch (currentState) {
+		switch (CurrentState) {
 			case LevelState.Preview:
 				if (firstFrameInState)
 				{
@@ -75,9 +85,8 @@ public class LevelController : MonoBehaviour {
 				{
 						if(introComplete || levelText.transform.position.x == textStartPos)
 						{
-							currentState = LevelState.Playing;
+							CurrentState = LevelState.Playing;
 							player.GetComponent<Rigidbody2D>().gravityScale = 1;
-							firstFrameInState = true;
 						}
 						if (!introComplete)
 						{
@@ -101,14 +110,12 @@ public class LevelController : MonoBehaviour {
 
 				if(player.GetComponent<PlayerController>().IsDead())
 				{
-					currentState = LevelState.Death;
-					firstFrameInState = true;
+					CurrentState = LevelState.Death;
 				}
 
 				if(goal.GetComponent<GoalController>().IsGoalReached())
 				{
-					currentState = LevelState.Complete;
-					firstFrameInState = true;
+					CurrentState = LevelState.Complete;
 				}
 				break;
 
