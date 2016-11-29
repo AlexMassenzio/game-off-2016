@@ -1,3 +1,19 @@
+# Tangent
+
+Tangent is a game where you spin off objects to attain victory. Use the various block types to **modify** your trajectory! The game was created using Unity's 2D engine. Shoutouts to the Stevens Game Development Club for being super supportive!
+
+##Controls
+
+* Action - Space/Left Click
+
+* Restart - R
+
+* Select Level - Keys 1-9
+
+* Skip Level - Right Arrow
+
+* Previous Level - Left Arrow
+
 # GitHub Game Off 2016
 
 ![GitHub Game Off 2016 Theme is Hacking, Modding, or Augmenting](https://cloud.githubusercontent.com/assets/121322/19498019/d8827370-9543-11e6-82d8-6da822b6147b.png)
