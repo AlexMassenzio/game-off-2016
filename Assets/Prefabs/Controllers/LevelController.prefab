@@ -34,7 +34,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1448602235472028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.7839359, y: 0.8787727, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -51,11 +51,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c4c985041773bf4d9c571feacc10fe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  guiPrefab: {fileID: 1915274462764162, guid: 85814d51018adb245a5511d61967b8c4, type: 2}
   player: {fileID: 0}
   goal: {fileID: 0}
-  completeText: {fileID: 0}
-  deadText: {fileID: 0}
-  whiteout: {fileID: 0}
-  WidescreenBottom: {fileID: 0}
-  WidescreenTop: {fileID: 0}
-  levelText: {fileID: 0}

@@ -6,10 +6,10 @@ using UnityEngine.UI;
 
 public class LevelController : MonoBehaviour {
 
+	//State machine variables
 	public enum LevelState {Preview, Playing, Death, Complete};
 	private LevelState currentState;
 	private bool firstFrameInState;
-
 	public LevelState CurrentState
 	{
 		get { return currentState; }
@@ -20,31 +20,49 @@ public class LevelController : MonoBehaviour {
 		}
 	}
 
-	private GameObject previewTrans;
-	private float timer;
 
-	//General Vars
+	//General variables
 	[SerializeField]
-	private GameObject player, goal, completeText, deadText;
+	private GameObject guiPrefab;
+	private GameObject myGUI;
 
-	//Fadeout/Fadein Vars
 	[SerializeField]
+	private GameObject player, goal;
+	private GameObject	completeText,
+						deadText,
+						WidescreenTop,
+						WidescreenBottom,
+						levelText,
+						mobileInputGUI;
+
+	//Fadeout/Fadein variables
 	private Image whiteout;
 	private const float FADE_TIME_SCALE = 0.5f;
 
-	//Intro Vars
+	//Intro variables
 	private const float WIDESCREEN_HEIGHT = 83f;
 	private float textStartPos;
 	private float textEndPos;
 	private bool introComplete;
-	[SerializeField]
-	private GameObject WidescreenBottom, WidescreenTop, levelText;
 
-	// Use this for initialization
+	//Misc variables
+	private GameObject previewTrans;
+	private float timer;
+
 	void Start () {
 		CurrentState = LevelState.Preview;
 		previewTrans = new GameObject();
 		timer = 0;
+
+		//Instantiate GUI and set GUI variables for ease of access
+		myGUI = Instantiate(guiPrefab);
+		completeText = myGUI.transform.GetChild(0).gameObject;
+		deadText = myGUI.transform.GetChild(1).gameObject;
+		whiteout = myGUI.transform.GetChild(2).gameObject.GetComponent<Image>();
+		WidescreenTop = myGUI.transform.GetChild(3).gameObject;
+		WidescreenBottom = myGUI.transform.GetChild(4).gameObject;
+		levelText = myGUI.transform.GetChild(5).gameObject;
+		mobileInputGUI = myGUI.transform.GetChild(6).gameObject;
 
 		introComplete = false;
 		textStartPos = (Screen.width + levelText.transform.parent.transform.position.x) * -1;
@@ -55,7 +73,6 @@ public class LevelController : MonoBehaviour {
 		Debug.Log(levelText.GetComponent<Text>().text);
 	}
 	
-	// Update is called once per frame
 	void Update ()
 	{
 		timer += Time.deltaTime;

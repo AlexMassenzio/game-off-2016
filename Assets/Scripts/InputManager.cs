@@ -4,13 +4,8 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour {
 
-	public enum InputType {Action, UI, Empty};
-
-	public InputType getInputType()
+	public bool GetInput(string input)
 	{
-		foreach(Touch touches in Input.touches)
-		{
-
-		}
+		return Input.GetButtonDown(input);
 	}
 }
