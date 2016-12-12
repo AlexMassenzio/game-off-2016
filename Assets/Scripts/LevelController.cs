@@ -27,6 +27,9 @@ public class LevelController : MonoBehaviour {
 	private GameObject myGUI;
 
 	[SerializeField]
+	private GameObject myInputManager;
+
+	[SerializeField]
 	private GameObject player, goal;
 	private GameObject	completeText,
 						deadText,
@@ -53,6 +56,10 @@ public class LevelController : MonoBehaviour {
 		CurrentState = LevelState.Preview;
 		previewTrans = new GameObject();
 		timer = 0;
+
+		myInputManager = new GameObject("InputManager");
+		myInputManager.AddComponent<InputManager>();
+		myInputManager.tag = "InputManager";
 
 		//Instantiate GUI and set GUI variables for ease of access
 		myGUI = Instantiate(guiPrefab);
@@ -144,7 +151,7 @@ public class LevelController : MonoBehaviour {
 					LeanTween.scale(deadText, new Vector3(1, 1, 1), 0.75f).setEase(LeanTweenType.easeOutBack);
 				}
 
-				if (Input.GetButtonDown("Action"))
+				if (myInputManager.GetComponent<InputManager>().GetInput("Action"))
 				{
 					SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 				}

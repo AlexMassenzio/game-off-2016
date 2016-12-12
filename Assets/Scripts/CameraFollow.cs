@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour {
 
-	[SerializeField]
 	private GameObject player;
 	private Transform focus;
 
@@ -17,6 +16,7 @@ public class CameraFollow : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
 	{
+		player = GameObject.FindGameObjectsWithTag("Player")[0];
 		focus = player.transform;
 		orthoDefaultSize = Camera.main.orthographicSize;
 		lastCoroutine = null;
