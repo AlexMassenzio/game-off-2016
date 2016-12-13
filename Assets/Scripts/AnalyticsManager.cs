@@ -46,10 +46,10 @@ public class AnalyticsManager : MonoBehaviour {
 
 	private void ReportLevelStart(int l)
 	{
-		Analytics.CustomEvent("levelStart", new Dictionary<string, object>
+		Debug.Log(Analytics.CustomEvent("levelStart", new Dictionary<string, object>
 		{
 			{"levelNumber", l}
-		});
+		}));
 		Debug.Log("Sent Analytics data: Entered Level: " + levelNumber);
 	}
 }
