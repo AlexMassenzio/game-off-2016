@@ -26,8 +26,7 @@ public class LevelController : MonoBehaviour {
 	private GameObject guiPrefab;
 	private GameObject myGUI;
 
-	[SerializeField]
-	private GameObject myInputManager;
+	private InputManager myInputManager;
 
 	[SerializeField]
 	private GameObject player, goal;
@@ -36,7 +35,7 @@ public class LevelController : MonoBehaviour {
 						WidescreenTop,
 						WidescreenBottom,
 						levelText,
-						mobileInputGUI;
+						mobileUI;
 
 	//Fadeout/Fadein variables
 	private Image whiteout;
@@ -52,14 +51,17 @@ public class LevelController : MonoBehaviour {
 	private GameObject previewTrans;
 	private float timer;
 
+	void Awake()
+	{
+		GameObject tempObj = new GameObject("InputManager");
+		myInputManager = tempObj.AddComponent<InputManager>();
+		tempObj.tag = "InputManager";
+	}
+
 	void Start () {
 		CurrentState = LevelState.Preview;
 		previewTrans = new GameObject();
 		timer = 0;
-
-		myInputManager = new GameObject("InputManager");
-		myInputManager.AddComponent<InputManager>();
-		myInputManager.tag = "InputManager";
 
 		//Instantiate GUI and set GUI variables for ease of access
 		myGUI = Instantiate(guiPrefab);
@@ -69,7 +71,7 @@ public class LevelController : MonoBehaviour {
 		WidescreenTop = myGUI.transform.GetChild(3).gameObject;
 		WidescreenBottom = myGUI.transform.GetChild(4).gameObject;
 		levelText = myGUI.transform.GetChild(5).gameObject;
-		mobileInputGUI = myGUI.transform.GetChild(6).gameObject;
+		mobileUI = myGUI.transform.GetChild(6).gameObject;
 
 		introComplete = false;
 		textStartPos = (Screen.width + levelText.transform.parent.transform.position.x) * -1;
@@ -105,7 +107,7 @@ public class LevelController : MonoBehaviour {
 					firstFrameInState = false;
 				}
 
-				if (Input.GetButtonDown("Action"))
+				if (myInputManager.GetInput("Action"))
 				{
 						if(introComplete || levelText.transform.position.x == textStartPos)
 						{
@@ -143,6 +145,7 @@ public class LevelController : MonoBehaviour {
 				}
 				break;
 
+
 			case LevelState.Death:
 				if (firstFrameInState)
 				{
@@ -165,14 +168,20 @@ public class LevelController : MonoBehaviour {
 					LeanTween.scale(completeText, new Vector3(1,1,1), 0.75f).setEase(LeanTweenType.easeOutBack);
 				}
 
-				if (Input.GetButtonDown("Action"))
+				if (myInputManager.GetInput("Action"))
 				{
 					StartCoroutine(Fadeout());
 				}
 				break;
 		};
+
+		if (myInputManager.GetInput("Pause"))
+		{
+			Time.timeScale = 0;
+		}
 	}
 
+	#region Misc Functions
 	private void IntroFinish (float timeScale, bool cancelEarly)
 	{
 		introComplete = true;
@@ -210,4 +219,5 @@ public class LevelController : MonoBehaviour {
 			index = SceneManager.sceneCountInBuildSettings - 1;
 		SceneManager.LoadScene(index);
 	}
+	#endregion
 }

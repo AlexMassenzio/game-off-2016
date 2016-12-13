@@ -13,7 +13,7 @@ public class StartGame : MonoBehaviour {
 	// Update is called once per frame
 	void Update()
 	{
-		if (Input.GetAxis("Action") > 0f)
+		if (Input.GetAxis("Action") > 0f || Input.GetMouseButtonDown(0))
 		{
 			SceneManager.LoadScene("Level0");
 		}

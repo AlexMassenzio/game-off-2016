@@ -6,23 +6,42 @@ using UnityEngine.EventSystems;
 
 public class InputManager : MonoBehaviour {
 
-	Button actionButton, resetButton;
+	public Dictionary<string, bool> inputActivity;
 
-	public void Initialize(Button a, Button r)
+	void Start()
 	{
-		actionButton = a;
-		resetButton = r;
+		inputActivity = new Dictionary<string, bool>();
+		inputActivity.Add("Action", false);
+		inputActivity.Add("Restart", false);
+		inputActivity.Add("Pause", false);
 	}
 
 	public bool GetInput(string input)
 	{
-		switch (input)
+		if(inputActivity.ContainsKey(input))
 		{
-			case "Action":
-				return (Input.GetButtonDown("Action") || Input.touches.Length != 0); //&& !IsPointerOverUIObject());  //(Application.platform == RuntimePlatform.Android && !IsPointerOverUIObject));
-				break;
+			return Input.GetButtonDown(input) || inputActivity[input] == true;
 		}
+
+		Debug.Log("InputManager does not recognize: " + input);
 		return false;
+	}
+
+	public void ReportButtonDown(string input)
+	{
+		if(inputActivity[input] == true)
+		{
+			inputActivity[input] = false;
+		}
+		else
+		{
+			inputActivity[input] = true;
+		}
+	}
+
+	public void ReportButtonUp(string input)
+	{
+		inputActivity[input] = false;
 	}
 
 	private bool IsPointerOverUIObject() 

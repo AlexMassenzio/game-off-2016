@@ -23,7 +23,16 @@ public class TutorialController : MonoBehaviour {
 	[SerializeField]
 	private Image whiteout;
 
-	// Use this for initialization
+	private InputManager myIM;
+
+	void Awake()
+	{
+		GameObject tempObj = new GameObject("InputManager");
+		myIM = tempObj.AddComponent<InputManager>();
+		tempObj.tag = "InputManager";
+	}
+
+
 	void Start () {
 		currentState = TutorialState.Intro;
 		timer = 0f;
@@ -71,29 +80,31 @@ public class TutorialController : MonoBehaviour {
 				}
 				else if (timer >= 7f)
 				{
-					tutText.text = "Press space to un-stick yourself.";
+					tutText.text = "Tap to un-stick yourself.";
 				}
 
-				if (Input.GetButtonDown("Action"))
+				if (Input.GetButtonDown("Action") || Input.GetMouseButtonDown(0))
 				{
-						currentState++;
-						timer = 0f;
+					myIM.ReportButtonDown("Action");
+					currentState++;
+					timer = 0f;
 				}
 				break;
 
 			case TutorialState.Unstuck:
+				myIM.ReportButtonUp("Action");
 				if (timer > 1.5f && timer < 4f)
 				{
-					tutText.text = "You have completed the tutorial! Press space";
+					tutText.text = "You have completed the tutorial! Tap to continue.";
 					Camera.main.GetComponent<CameraFollow>().SetFocus(tutText.transform);
 				}
 
-				if (Input.GetAxis("Action") > 0f && timer > 1.5f && escapable)
+				if ((Input.GetButtonDown("Action") || Input.GetMouseButtonDown(0)) && timer > 1.5f && escapable)
 				{
 					escapable = false;
 					StartCoroutine(Fadeout());
 				}
-					break;
+				break;
 		};
 	}
 

@@ -8,9 +8,9 @@ public class PlayerController : MonoBehaviour
 	private Rigidbody2D rbody;
 	private Vector2 lastPosition;
 
-	private bool pressed;
 	private bool dead;
 	private int frameSinceLastCollision;
+	private InputManager myInputManager;
 
 	private KeyCode[] numKeys = {
 		 KeyCode.Alpha1,
@@ -33,9 +33,10 @@ public class PlayerController : MonoBehaviour
 		rbody = GetComponent<Rigidbody2D>();
 		rbody.gravityScale = 0f;
 		dead = false;
-		pressed = false;
 		rbody.angularDrag = 0;
 		frameSinceLastCollision = -1;
+		myInputManager = GameObject.FindGameObjectWithTag("InputManager").GetComponent<InputManager>();
+		Debug.Log(myInputManager.name);
 	}
 
 	void Update()
@@ -44,30 +45,32 @@ public class PlayerController : MonoBehaviour
 		{
 			frameSinceLastCollision++;
 		}
-		for (int i = 0; i < numKeys.Length; i++)
+		if (Time.timeScale != 0)
 		{
-			if (Input.GetKeyDown(numKeys[i]))
+			for (int i = 0; i < numKeys.Length; i++)
 			{
-				int numberPressed = i + 1;
-				SceneManager.LoadScene(numberPressed);
+				if (Input.GetKeyDown(numKeys[i]))
+				{
+					int numberPressed = i + 1;
+					SceneManager.LoadScene(numberPressed);
+				}
+			}
+
+			if (Input.GetKeyDown(KeyCode.RightArrow))
+			{
+				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+			}
+
+			if (Input.GetKeyDown(KeyCode.LeftArrow))
+			{
+				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+			}
+
+			if (myInputManager.GetInput("Restart"))
+			{
+				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 			}
 		}
-
-		if (Input.GetKeyDown(KeyCode.RightArrow))
-		{
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-		}
-
-		if (Input.GetKeyDown(KeyCode.LeftArrow))
-		{
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
-		}
-
-		if (Input.GetKeyDown(KeyCode.R))
-		{
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-		}
-
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			Application.Quit();
@@ -77,9 +80,9 @@ public class PlayerController : MonoBehaviour
 	void FixedUpdate()
 	{
 
-		if (Input.GetAxis("Action") > 0f)
+		if (myInputManager.GetInput("Action"))
 		{
-			if (!pressed && transform.parent != null && frameSinceLastCollision > 2)
+			if (transform.parent != null && frameSinceLastCollision > 2)
 			{
 				Debug.Log("Releasing");
 				Vector2 detachedVelocity = ((Vector2)transform.position - lastPosition) * (1 / Time.fixedDeltaTime);
@@ -91,14 +94,8 @@ public class PlayerController : MonoBehaviour
 				GetComponent<AudioSource>().Play();
 				frameSinceLastCollision = -1;
 			}
-			pressed = true;
 		}
 		lastPosition = transform.position;
-
-		if (Input.GetAxis("Action") == 0f)
-		{
-			pressed = false;
-		}
 	}
 
 	public void OnTriggerEnter2D(Collider2D collision)
